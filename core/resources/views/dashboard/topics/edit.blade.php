@@ -1486,14 +1486,14 @@ if ($WebmasterSection->$title_var != "") {
                
                 var fatherId = $(this).find("option:selected").text();
                 var catId = this.value;
-                alert(catId);
+               // alert(catId);
                 
                 $('#capacity').html('');
                 $.ajax({
                     url: "{{url('admin/getparent')}}?parent_id="+catId,
                     type: 'get',
                     success: function (res1) {
-                       alert("hi")
+                      // alert("hi")
                         // $('#capacity').html(res1.title_en);
                         $('#cat_id').val(res1);
                      
@@ -1506,7 +1506,7 @@ if ($WebmasterSection->$title_var != "") {
                    
                 $('#customField_4').html('');
                 $.ajax({
-                    url: "{{url('admin/getbooking')}}?father_id="+father_cat,
+                    url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
                     type: 'get',
                     success: function (res1) {
                         $('#customField_4').html('<option value=""></option>');
@@ -1530,7 +1530,7 @@ if ($WebmasterSection->$title_var != "") {
                // alert(bookingId);   
                 $('#customField_6').html('');
                 $.ajax({
-                    url: "{{url('admin/getbilling')}}?father_id="+bookingId,
+                    url: "{{url('dashboard/getbilling')}}?father_id="+bookingId,
                     type: 'get',
                     success: function (res) {
                     //  console.log(JSON.stringify(res));
