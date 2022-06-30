@@ -1,5 +1,6 @@
 {{-- Additional --}}
 @if($WebmasterSection->additional_fee_status)
+   
     <div class="tab-pane " id="tab_additional">
         <div class="box-body">
                 <div class="row">
@@ -60,6 +61,8 @@
                 </div> 
         </div>
     </div>
+                        
+    <input type="hidden" name="section_id" id="book_id" />
     <script type="text/javascript">           
         /* 2nd */
         $(document).ready(function(){

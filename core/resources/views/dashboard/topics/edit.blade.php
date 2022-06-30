@@ -17,7 +17,11 @@ if ($WebmasterSection->$title_var != "") {
     <![endif]-->
 @endpush
 @section('content')
-
+<div id="overlay">
+  <div class="cv-spinner">
+    <span class="spinner"></span>
+  </div>
+</div>
 <div class="padding">
     <div class="box m-b-0">
         <div class="box-header dker">
@@ -280,36 +284,30 @@ if ($WebmasterSection->$title_var != "") {
         }
     ?>
     <div class="box nav-active-border b-info">
+        <!-- TOP Tabs we are not using in Listing -->
         <ul class="nav nav-md">
             <li class="nav-item inline">
                 <a class="nav-link {{ $tab_1 }}" href data-toggle="tab" data-target="#tab_details">
                     <span class="text-md"><i class="material-icons">&#xe31e;</i> {{ __('backend.topicTabDetails') }}</span>
                 </a>
-            </li>
-
-           
+            </li>           
             @if($WebmasterSection->billing_status)
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_8 }}" href data-toggle="tab" data-target="#tab_bill">
                         <span class="text-md"><i class="material-icons">
                         &#xe8e5;</i> Billing</span>
                     </a>
-                </li>
-            @endif
-              
+            </li>
+            @endif              
             @if($WebmasterSection->description_status)
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_9 }}" href data-toggle="tab" data-target="#tab_desc">
                         <span class="text-md"><i class="material-icons">&#xe8e5;</i> Description</span>
                     </a>
-                </li>
+            </li>
             @endif
-               
-                
-           
-
             @if($WebmasterSection->comments_status)
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_4 }}" href data-toggle="tab" data-target="#tab_comments">
                         <span class="text-md"><i class="material-icons">
                             &#xe0b9;</i> {{ __('backend.comments') }}
@@ -318,12 +316,10 @@ if ($WebmasterSection->$title_var != "") {
                         @endif
                         </span>
                     </a>
-                </li>
+            </li>
             @endif
-
-
             @if($WebmasterSection->maps_status)
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_5 }}" id="mapTabLink" href data-toggle="tab" data-target="#tab_maps">
                         <span class="text-md"><i class="material-icons">&#xe0c8;</i> {{ __('backend.topicGoogleMaps') }}
                         @if(count($Topics->maps)>0)
@@ -331,11 +327,10 @@ if ($WebmasterSection->$title_var != "") {
                         @endif
                         </span>
                     </a>
-                </li>
+            </li>
             @endif
-
             @if($WebmasterSection->related_status)
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_7 }}" href data-toggle="tab" data-target="#tab_related">
                         <span class="text-md"><i class="material-icons">&#xe867;</i> {{ __('backend.relatedTopics') }}
                         @if(count($Topics->relatedTopics)>0)
@@ -343,22 +338,24 @@ if ($WebmasterSection->$title_var != "") {
                         @endif
                         </span>
                     </a>
-                </li>
+            </li>
             @endif
 
             @if(Helper::GeneralWebmasterSettings("seo_status"))
-                <li class="nav-item inline">
+            <li class="nav-item inline">
                     <a class="nav-link  {{ $tab_2 }}" href data-toggle="tab" data-target="#tab_seo">
                         <span class="text-md"><i class="material-icons">
                             &#xe8e5;</i> {{ __('backend.seoTabTitle') }}</span>
                     </a>
-                </li>
+            </li>
             @endif
         </ul>
-        <div class="tab-content clear b-t">
-            <div class="tab-pane  {{ $tab_1 }}" id="tab_details">
-                <div class="box-body">
-                    {{Form::open(['route'=>['topicsUpdate',"webmasterId"=>$WebmasterSection->id,"id"=>$Topics->id], 'name'=>'signup-form' ,  'id'=>'signup-form', 'method'=>'POST', 'files' => true])}}
+        <!-- TOP Tabs Ends we are not using in Listing -->
+              
+
+        <div class="tab-content clear b-t">           
+            <div class="box-body">
+                {{Form::open(['route'=>['topicsUpdate',"webmasterId"=>$WebmasterSection->id,"id"=>$Topics->id], 'name'=>'signup-form' ,  'id'=>'signup-form', 'method'=>'POST', 'files' => true])}}
                         @if($WebmasterSection->date_status)
                             <div class="form-group row">
                                 <label for="date" class="col-sm-2 form-control-label">{!!  __('backend.topicDate') !!}
@@ -417,13 +414,14 @@ if ($WebmasterSection->$title_var != "") {
                                 </div>
                             </div>
                         @endif
-                      
+                        
                         @if($WebmasterSection->title_en == "Listings")
                             <h3>
                                 <span class="icon"><i class="ti-user"></i></span>
                                 <span class="title_text">Category</span>
                             </h3>
                             <fieldset>
+                            <div  class="tab-pane  {{ $tab_1 }}" id="tab_details">
                         @endif
                         @if($WebmasterSection->sections_status!=0)
                             <div class="form-group row by-activity">                           
@@ -486,15 +484,14 @@ if ($WebmasterSection->$title_var != "") {
                             </div>                            
                         @else
                             {!! Form::hidden('section_id',$Topics->section_id) !!}
-                        @endif
-                           
-                        <div class="form-group row by-activity"> <h4>Title </h4></div>
+                        @endif                           
+                        
                         @if($WebmasterSection->title_status)
                             @foreach(Helper::languagesList() as $ActiveLanguage)
                                 @if($ActiveLanguage->box_status)
                                     <div class="form-group row">
                                         <label
-                                            class="col-sm-2 form-control-label">{!!  __('backend.topicName') !!} {!! @Helper::languageName($ActiveLanguage) !!}
+                                            class="col-sm-2 form-control-label">{!!  __('backend.topicName') !!} 
                                         </label>
                                         <div class="col-sm-10">
                                             {!! Form::text('title_'.@$ActiveLanguage->code,$Topics->{'title_'.@$ActiveLanguage->code}, array('placeholder' => '','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
@@ -1212,7 +1209,7 @@ if ($WebmasterSection->$title_var != "") {
                                 </div>
                             @endif
                         @endif
- 
+                        @if($WebmasterSection->title_en != "Listings")
                         <div class="form-group row m-t-md">
                             <div class="offset-sm-2 col-sm-10">
                                 <button type="submit" class="btn btn-primary m-t"><i class="material-icons">
@@ -1222,76 +1219,82 @@ if ($WebmasterSection->$title_var != "") {
                                         &#xe5cd;</i> {!! __('backend.cancel') !!}</a>
                             </div>
                         </div>
-                       
+                        @endif
+ 
+                        
+                                            
                         <input type="hidden" name="section_id" id="book_id" />
-                    </fieldset>
-                    @if($WebmasterSection->additional_fee_status)
-                        <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Fees</span>
-                        </h3>
-                        <fieldset>                            
-                            @include('dashboard.topics.tabs.additional')
+                        @if($WebmasterSection->title_en == "Listings")
+                            </div>
+                        @endif
+                        
                         </fieldset>
-                    @endif  
-                    @if($WebmasterSection->activity_status)
-                        <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Activity</span>
-                        </h3>
-                        <fieldset>
-                            @include('dashboard.topics.tabs.activity')
-                        </fieldset>
-                    @endif
-                    @if($WebmasterSection->package_status)
-                        <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Package</span>
-                        </h3>
-                        <fieldset> 
-                            @include('dashboard.topics.tabs.package')
-                        </fieldset>
-                    @endif
-                    @if($WebmasterSection->extra_attach_file_status)
-                    <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Photos</span>
-                        </h3>
-                        <fieldset> 
-                            @include('dashboard.topics.tabs.files')
-                        </fieldset>
-            @endif
-         
-                    @if($WebmasterSection->capacity_status)
-                        <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Capacity</span>
-                        </h3>
-                        <fieldset> 
-                            @include('dashboard.topics.tabs.capacity')
-                        </fieldset>
-                    @endif
-                    @if($WebmasterSection->ammenities_status)
+                        @if($WebmasterSection->additional_fee_status)
+                            <h3>
+                            <span class="icon"><i class="ti-email"></i></span>
+                            <span class="title_text">Fees</span>
+                            </h3>
+                            <fieldset>                            
+                                @include('dashboard.topics.tabs.additional')
+                            </fieldset>
+                        @endif  
+                        @if($WebmasterSection->activity_status)
+                            <h3>
+                            <span class="icon"><i class="ti-email"></i></span>
+                            <span class="title_text">Activity</span>
+                            </h3>
+                            <fieldset>
+                                @include('dashboard.topics.tabs.activity')
+                            </fieldset>
+                        @endif
+                        @if($WebmasterSection->package_status)
+                            <h3>
+                            <span class="icon"><i class="ti-email"></i></span>
+                            <span class="title_text">Package</span>
+                            </h3>
+                            <fieldset> 
+                                @include('dashboard.topics.tabs.package')
+                            </fieldset>
+                        @endif
+                        @if($WebmasterSection->extra_attach_file_status)
                         <h3>
                             <span class="icon"><i class="ti-email"></i></span>
-                            <span class="title_text">Ammenities</span>
-                        </h3>
-                        <fieldset> 
-                            @include('dashboard.topics.tabs.ammenities')
-                        </fieldset>
-                    @endif
-                    @if($WebmasterSection->multi_images_status)
-            <h3>
-                        <span class="icon"><i class="ti-email"></i></span>
-                        <span class="title_text">Photos</span>
-                        </h3>
-                        <fieldset> 
-                            @include('dashboard.topics.tabs.photos')
-                        </fieldset>
-            @endif
-                    {{Form::close()}}
+                            <span class="title_text">Photos</span>
+                            </h3>
+                            <fieldset> 
+                                @include('dashboard.topics.tabs.files')
+                            </fieldset>
+                        @endif
+            
+                        @if($WebmasterSection->capacity_status)
+                            <h3>
+                            <span class="icon"><i class="ti-email"></i></span>
+                            <span class="title_text">Capacity</span>
+                            </h3>
+                            <fieldset> 
+                                @include('dashboard.topics.tabs.capacity')
+                            </fieldset>
+                        @endif
+                        @if($WebmasterSection->ammenities_status)
+                            <h3>
+                                <span class="icon"><i class="ti-email"></i></span>
+                                <span class="title_text">Ammenities</span>
+                            </h3>
+                            <fieldset> 
+                                @include('dashboard.topics.tabs.ammenities')
+                            </fieldset>
+                        @endif
+                        @if($WebmasterSection->multi_images_status)
+                            <h3>
+                                <span class="icon"><i class="ti-email"></i></span>
+                                <span class="title_text">Photos</span>
+                            </h3>
+                            <fieldset> 
+                                @include('dashboard.topics.tabs.photos')
+                            </fieldset>
+                        @endif
+                {{Form::close()}}    
                       
-                </div>
             </div>
         </div>
     </div>
@@ -1469,7 +1472,7 @@ if ($WebmasterSection->$title_var != "") {
             
                 $('#booking').html('<option>Booking Type</option>');
                 $.ajax({
-                    url: "{{url('admin/getbooking')}}?father_id="+father_cat,
+                    url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
                     type: 'get',
                     success: function (res1) {
                         $('#booking').html('<option value=""></option>');
@@ -1490,7 +1493,7 @@ if ($WebmasterSection->$title_var != "") {
                 
                 $('#capacity').html('');
                 $.ajax({
-                    url: "{{url('admin/getparent')}}?parent_id="+catId,
+                    url: "{{url('dashboard/getparent')}}?parent_id="+catId,
                     type: 'get',
                     success: function (res1) {
                       // alert("hi")
@@ -1557,6 +1560,10 @@ const count = str.match(re).length;
 
 return count;
 }
+
+
+
+
     </script>
       <script src="vendor/jquery/jquery.min.js"></script>
     <script src="{{ asset('assets/dashboard/vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>

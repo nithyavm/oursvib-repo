@@ -745,6 +745,14 @@ class TopicsController extends Controller
      */
     public function update(Request $request, $webmasterId, $id)
     {
+
+        // $data['request']= $request;
+        // $data['webmasterId']= $webmasterId;
+        // $data['id']= $id;
+        // return $data;
+       // foreach (Helper::languagesList() as $ActiveLanguage) {
+      
+       // }
         $WebmasterSection = WebmasterSection::find($webmasterId);
         if (!empty($WebmasterSection)) {
             //
@@ -834,7 +842,7 @@ class TopicsController extends Controller
                 if (@$request->expire_date != "") {
                     $Topic->expire_date = Helper::dateForDB(@$request->expire_date);
                 }
-
+                
                 if ($request->photo_delete == 1) {
                     // Delete photo_file
                     if ($Topic->photo_file != "") {
@@ -877,6 +885,7 @@ class TopicsController extends Controller
                 }
                 $Topic->updated_by = Auth::user()->id;
                 $Topic->save();
+                
 
                 // Remove old categories
                 TopicCategory::where('topic_id', $Topic->id)->delete();
@@ -951,6 +960,7 @@ class TopicsController extends Controller
                                 $TopicField->field_value = $field_value;
                                 $TopicField->save();
                             }
+                            
                         }
                     }
                 }
@@ -958,15 +968,23 @@ class TopicsController extends Controller
                 // SEND Notification Email
                 $this->send_notification($WebmasterSection, $Topic, "Update");
 
-
-                return redirect()->action('Dashboard\TopicsController@edit', [$webmasterId, $id])->with('doneMessage',
-                    __('backend.saveDone'));
+                if($WebmasterSection->title_en === "Listings")
+                    return true;
+                else
+                    return redirect()->action('Dashboard\TopicsController@edit', [$webmasterId, $id])->with('doneMessage',__('backend.saveDone'));
             } else {
-                return redirect()->action('Dashboard\TopicsController@index', $webmasterId);
+                if($WebmasterSection->title_en === "Listings")
+                    return false;
+                else
+                    return redirect()->action('Dashboard\TopicsController@index', $webmasterId);
             }
         } else {
-            return redirect()->route('NotFound');
+            if($WebmasterSection->title_en === "Listings")
+                    return false;
+            else
+                return redirect()->route('NotFound');
         }
+        
     }
 
     public function view($webmasterId, $id)

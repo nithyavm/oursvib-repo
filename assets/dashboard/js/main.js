@@ -67,6 +67,7 @@
             $(element).addClass('valid');
         }
     });
+    var is_async_step = false;
     form.steps({
         headerTag: "h3",
         bodyTag: "fieldset",
@@ -80,8 +81,45 @@
         titleTemplate : '<span class="title">#title#</span>',
         onStepChanging: function (event, currentIndex, newIndex)
         {
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
+           
+            if (currentIndex == 0) var tabpanel ='#tab_details';
+            if (currentIndex == 1) var tabpanel ='#tab_additional';
+
+            if (currentIndex > newIndex)
+                return true
+            else {
+                if (is_async_step) {
+                    is_async_step = false;
+                    //ALLOW NEXT STEP
+                    return true;
+                }
+                var actionUrl=$("#signup-form").attr('action');              
+                var formData = $(tabpanel).find('select, textarea, input').serialize() // Gets the data from the form fields
+                $.ajax({
+                        type: "POST",
+                        url: actionUrl,
+                        data: formData,  
+                        beforeSend: function(){
+                            /* Show image container */
+                            $("#overlay").show();
+                        },
+                        success: function (data) {                                                 
+                            is_async_step = true;                            
+                            $(form).steps("next");
+                        },
+                        complete:function(data){
+                            /* Hide image container */
+                            $("#overlay").hide();
+                        },                        
+                        error: function (data) {
+                            return false;
+                        }
+                });
+            }
+            
+            
+			
+		
         },
         onFinishing: function (event, currentIndex)
         {
@@ -96,6 +134,11 @@
         //     event.append('demo');
         // }
     });
+
+    function savetab(actionUrl,formData) {
+        
+
+    }
 
     jQuery.extend(jQuery.validator.messages, {
         required: "",
