@@ -20,6 +20,10 @@
                     <?php  $count = 0; ?>
                     @foreach ($Additional as $Additionalfee)
                         <?php
+                        $addfeehidden="addfeehidden_".$count;
+                        $addfeeselect="addfeeselect_".$count;
+                        $addfeeseclectdiv="addfeeselect_".$count."_div";
+                        $addfeeseclectdivtext="addfeeselectdivtext_".$count;
                         if ($Additionalfee->$title_var != "") {
                             $title = $Additionalfee->$title_var;
                             $select = strtolower(str_replace(' ', '_', $Additionalfee->$title_var));
@@ -29,26 +33,29 @@
                         }
                         $select_text = strtolower(str_replace(' ', '_', $Additionalfee->$title_var))."_text";  
                         $select_div = strtolower(str_replace(' ', '_', $Additionalfee->$title_var))."_div";  
-                        $count++;    ?>
+                        $count++;
+                           ?>
                         <div class="col-md-4 bord-focus">
                             <div class="form-group">
                                 <label for="{{ $title }}" class="form-label add-fee-form-lab">{{ $title }}</label>
+                                <input type="hidden" name="{{ $addfeehidden }}" value="{{ $title }}" />
                                 <div class="arrow-aft">
-                                    <select name="{{ $select }}" id='{{$select}}' class="dynamic_additional_fees" >
+                                    <select name="{{$addfeeselect}}" id='{{$addfeeselect}}' class="dynamic_additional_fees" >
                                         <option value="0">Included</option>                   
                                         <option value="2">Paid, Included</option>
                                     </select>
                                 </div>
-                                <div class="add-fees" style='display:none;' id='{{$select_div}}'>Price for{ { $title }} (per hour)
+                                <div class="add-fees" style='display:none;' id='{{$addfeeseclectdiv}}'>Price for{ { $title }} (per hour)
                                     <div class="input-group m-bot15">
                                         <span class="input-group-addon">RM</span>
-                                        <input type="number" name="{{$select_text}}" class="form-control">
+                                        <input type="number" name="{{$addfeeseclectdivtext}}" class="form-control">
                                         <span class="input-group-addon ">.00</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <input type="hidden" name="purpose" value='{{$count}}' />
+                       
                     @endforeach
                 </div> 
         </div>
@@ -58,7 +65,9 @@
         $(document).ready(function(){
             $('.dynamic_additional_fees').on('change', function() {      
             selected_id = this.id; 
-            if ( this.value == '2')
+          //  alert(selected_id)
+         //   alert(this.value)
+            if (this.value == '2')
                 $("#"+selected_id+"_div").show();
             else
                 $("#"+selected_id+"_div").hide();
