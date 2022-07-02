@@ -35,7 +35,7 @@
                                         </ol>
                                     </div>
                                 </div>
-                                <div class="row"> <input type="checkbox" name="package_id[]" value="{{$Package->id}}" {{ in_array($Package->id, $package_arr) ? 'checked' : '' }} /> Select {{$Package_title}}
+                                <div class="row"> <input type="checkbox" name="package_id[]" value="{{$Package->id}}"  }} /> Select {{$Package_title}}
                                 <input type="hidden" name="package_name[]" value="{{$Package_title}}" />
                                 
 

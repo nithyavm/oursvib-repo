@@ -19,8 +19,7 @@
                                             }
                                             ?>
                                         
-                            <input type="checkbox" id="{{ $ammenity_title}}" name="ammenity[]" value="{{ $ammenity_title}}"
-                            {{  str_contains($Selected_Ammenity[0]->fee_name, $ammenity_title)  ? 'checked' : '' }}>
+                            <input type="checkbox" id="{{ $ammenity_title}}" name="ammenity[]" value="{{ $ammenity_title}}"      >
                                 <label for="{{ $ammenity_title}}">{{ $ammenity_title}}</label>
 
                                 @endforeach
@@ -41,7 +40,7 @@
                                             ?>
                                         
                             <input type="checkbox" id="{{ $facility_title}}" name="facility[]" value="{{ $facility_title}}" 
-                            {{  str_contains($Selected_Facility[0]->fee_name, $facility_title)  ? 'checked' : '' }}>
+                            >
                                 <label for="{{$facility_title}}">{{$facility_title}}</label>
 
                                 @endforeach

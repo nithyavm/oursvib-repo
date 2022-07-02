@@ -592,9 +592,9 @@ class TopicsController extends Controller
             //return $Listing->id;
             
            // return $Topic->id;
-            if ($request->section_id != "" && $request->section_id != 0) {
+            if ($request->category_id != "" && $request->category_id != 0) {
                 // Save categories
-                foreach ($request->section_id as $category) {
+                foreach ($request->category_id as $category) {
                     if ($category > 0) {
                         $TopicCategory = new TopicCategory;
                         $TopicCategory->topic_id = $Topic->id;
@@ -842,12 +842,14 @@ class TopicsController extends Controller
 
                 }
                 // End of Upload Files
-                foreach (Helper::languagesList() as $ActiveLanguage) {
-                    if ($ActiveLanguage->box_status) {
-                        $Topic->{"title_" . $ActiveLanguage->code} = $request->{"title_" . $ActiveLanguage->code};
-                        $Topic->{"details_" . $ActiveLanguage->code} = $request->{"details_" . $ActiveLanguage->code};
-                    }
-                }
+                if (@$request->title_en != "") {
+					foreach (Helper::languagesList() as $ActiveLanguage) {
+						if ($ActiveLanguage->box_status) {
+							$Topic->{"title_" . $ActiveLanguage->code} = $request->{"title_" . $ActiveLanguage->code};
+							$Topic->{"details_" . $ActiveLanguage->code} = $request->{"details_" . $ActiveLanguage->code};
+						}
+					}
+				}
                 $Topic->date = Helper::dateForDB($request->date);
                 if (@$request->expire_date != "") {
                     $Topic->expire_date = Helper::dateForDB(@$request->expire_date);
@@ -900,8 +902,8 @@ class TopicsController extends Controller
                 // Remove old categories
                 TopicCategory::where('topic_id', $Topic->id)->delete();
                 // Save new categories
-                if ($request->section_id != "" && $request->section_id != 0) {
-                    foreach ($request->section_id as $category) {
+                if ($request->category_id != "" && $request->category_id != 0) {
+                    foreach ($request->category_id as $category) {
                         if ($category > 0) {
                             $TopicCategory = new TopicCategory;
                             $TopicCategory->topic_id = $Topic->id;

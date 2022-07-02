@@ -28,6 +28,12 @@ class Topic extends Model
         return $this->hasMany('App\Models\TopicCategory');
     }
 
+    //Relation to Photos
+    public function fetchcategory()
+    {
+        return $this->hasMany('App\Models\TopicCategory', 'topic_id')->orderby('id', 'asc');
+    }
+
     //Relation to Users
     public function user()
     {

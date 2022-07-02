@@ -124,10 +124,10 @@ if ($WebmasterSection->$title_var != "") {
                          
                 @if($WebmasterSection->sections_status!=0)
                     <div class="form-group row">
-                        <label for="section_id"
+                        <label for="category_id"
                                class="col-sm-2 form-control-label">{!!  __('backend.hasCategories') !!} </label>
                         <div class="col-sm-10">
-                            <select name="section_id[]" id="section_id" class="form-control select2-multiple" 
+                            <select name="category_id[]" id="category_id" class="form-control select2-multiple" 
                                     ui-jp="select2"
                                     ui-options="{theme: 'bootstrap'}" required>
                                     <option> Select Category</option>
@@ -854,7 +854,7 @@ if ($WebmasterSection->$title_var != "") {
     </script>
  <script type="text/javascript">
         $(document).ready(function () {
-            $('#section_id').on('change', function () {
+            $('#category_id').on('change', function () {
                 var fatherId = $(this).find("option:selected").text();
                 var arrStr = fatherId.split(/[>;]/);
                 var father_cat=arrStr[2];

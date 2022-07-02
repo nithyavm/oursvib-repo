@@ -113,7 +113,7 @@ Route::get('/getparent', [CategoriesController::class, 'getParent'])->name('getP
 
 // Topics
 Route::get('/{webmasterId}/topics', [TopicsController::class, 'index'])->name('topics');
-Route::post('/topics-list', [TopicsController::class, 'list'])->name('topicsList');
+Route::get('/topics-list', [TopicsController::class, 'list'])->name('topicsList');
 Route::get('/{webmasterId}/view/{id}', [TopicsController::class, 'view'])->name('topicView');
 Route::get('/{webmasterId}/topics/create', [TopicsController::class, 'create'])->name('topicsCreate');
 Route::post('/{webmasterId}/topics/store', [TopicsController::class, 'store'])->name('topicsStore');

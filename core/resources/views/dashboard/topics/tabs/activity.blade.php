@@ -18,7 +18,7 @@
                                                 ?>
                                
                                 <input type="checkbox" id='{{ $act_title}}' name="activity[]" value="{{ $act_title}}" 
-                                {{  str_contains($Selected_Activity[0]->fee_name, $act_title)  ? 'checked' : '' }} >
+                               >
 
                                 <label for="{{ $act_title}}">{{ $act_title}}</label>
                                 @endforeach

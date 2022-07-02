@@ -424,18 +424,23 @@ if ($WebmasterSection->$title_var != "") {
                             <div  class="tab-pane  {{ $tab_1 }}" id="tab_details">
                         @endif
                         @if($WebmasterSection->sections_status!=0)
-                            <div class="form-group row by-activity">                           
-                                <label for="section_id" class="col-sm-2 form-control-label">{!!  __('backend.hasCategories') !!} </label>
-                                <div class="col-sm-10">
-                                    <select name="section_id[]" id="section_id" class="form-control select2-multiple" ui-jp="select2"  ui-options="{theme: 'bootstrap'}" required>
-                                        <?php
+                            <div class="form-group row by-activity">        
+                                <?php
                                         $title_var = "title_" . @Helper::currentLanguage()->code;
                                         $title_var2 = "title_" . env('DEFAULT_LANGUAGE');
                                         $t_arrow = ">";
                                         $categories = array();
                                         foreach ($Topics->categories as $category) {
                                             $categories[] = $category->section_id;
-                                        } ?>
+                                        } 
+                                        
+                                       
+                                        
+                                ?>                   
+                                <label for="category_id" class="col-sm-2 form-control-label">{!!  __('backend.hasCategories') !!} </label>
+                                <div class="col-sm-10">
+                                    <select name="category_id[]" id="category_id" class="form-control select2-multiple" ui-jp="select2"  ui-options="{theme: 'bootstrap'}" required>
+                                       
                                         @foreach ($fatherSections as $fatherSection)
                                             <?php
                                             if ($fatherSection->$title_var != "") {
@@ -482,8 +487,9 @@ if ($WebmasterSection->$title_var != "") {
                                     </select>                                    
                                 </div>
                             </div>                            
-                        @else
-                            {!! Form::hidden('section_id',$Topics->section_id) !!}
+                        
+                            {!! Form::hidden('section_id',$Topics->webmaster_id) !!}
+                            {!! Form::hidden('topic_id',$Topics->id) !!}
                         @endif                           
                         
                         @if($WebmasterSection->title_status)
@@ -785,6 +791,7 @@ if ($WebmasterSection->$title_var != "") {
                                 } else {
                                     $cf_title = $customField->$cf_title_var2;
                                 }
+                                $cf_seo_title= str_replace(' ', '-', strtolower($cf_title));
 
                                 // check field language status
                                 $cf_land_identifier = "";
@@ -971,6 +978,7 @@ if ($WebmasterSection->$title_var != "") {
                                                    class="col-sm-2 form-control-label">{!!  $cf_title !!}
                                                 {!! $cf_land_identifier !!}</label>
                                             <div class="col-sm-10">
+                                                
                                                 <select name="{{'customField_'.$customField->id}}[]"
                                                         id="{{'customField_'.$customField->id}}"
                                                         class="form-control select2-multiple" multiple
@@ -1002,7 +1010,11 @@ if ($WebmasterSection->$title_var != "") {
                                         <div class="form-group row">
                                             <label for="{{'customField_'.$customField->id}}"
                                                    class="col-sm-2 form-control-label">{!!  $cf_title !!}
-                                                {!! $cf_land_identifier !!}</label>
+                                                {!! $cf_land_identifier !!}
+                                            
+                                            
+                                            <input type="hidden" name="{!! $cf_seo_title!!}" id="{!! $cf_seo_title!!}" value="{!! $cf_saved_val !!}" />
+                                            </label>
                                             <div class="col-sm-10">
                                                 <select name="{{'customField_'.$customField->id}}"
                                                         id="{{'customField_'.$customField->id}}"
@@ -1223,7 +1235,7 @@ if ($WebmasterSection->$title_var != "") {
  
                         
                                             
-                        <input type="hidden" name="section_id" id="book_id" />
+                        
                         @if($WebmasterSection->title_en == "Listings")
                             </div>
                         @endif
@@ -1464,88 +1476,86 @@ if ($WebmasterSection->$title_var != "") {
            
         // });
         $(document).ready(function () {
-            var fatherId = $(this).find("option:selected").text();
-               
-                var letterToCheck =">";
-                var arrStr = fatherId.split(/[>;]/);
-                var father_cat=arrStr[2];
-            
-                $('#booking').html('<option>Booking Type</option>');
-                $.ajax({
-                    url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
-                    type: 'get',
-                    success: function (res1) {
-                        $('#booking').html('<option value=""></option>');
-                        $.each(res1, function (key, value) {
-                        
-                            $('#booking').append('<option value="' + value
-                                .id + '">' + value.title_en+ '</option>');
-                            });
-                       
-                    }
-                });
+            loadbookingtype()
            
-            $('#section_id').on('change', function () {
                
-                var fatherId = $(this).find("option:selected").text();
-                var catId = this.value;
-               // alert(catId);
-                
+           
+            $('#category_id').on('change', function () {
+                loadbookingtype();           
+            });
+
+            function loadbookingtype(setselect) {
+                var fatherId = $('#category_id').find("option:selected").text();
+                var catId = $("#category_id").val();       
                 $('#capacity').html('');
                 $.ajax({
                     url: "{{url('dashboard/getparent')}}?parent_id="+catId,
                     type: 'get',
-                    success: function (res1) {
-                      // alert("hi")
-                        // $('#capacity').html(res1.title_en);
-                        $('#cat_id').val(res1);
+                    success: function (res1) {     
+                        $('#customField_4').val(res1);            
+                        var letterToCheck =">";
+                        //passing parameters and calling the function
+                        var arrStr = fatherId.split(/[>;]/);
+                        var father_cat=arrStr[2];
+                        
+                        $('#customField_4').html('');
+                        $.ajax({
+                            url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
+                            type: 'get',
+                            success: function (res1) {
+                                $('#customField_4').html('<option value="">Booking Type</option>');
+                                $.each(res1, function (key, value) {
+                                var selected = $("#booking-type").val();                            
+                                if (value.id==selected) {
+                                    $('#customField_4').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
+                                } else {
+                                    $('#customField_4').append('<option  value="' + value
+                                        .id + '">' + value.title_en+ '</option>');
+                                }
+                                });  
+                                loadbillingtype();
+                                           
+                            }
+                        });                 
+                        
                      
                     }
                 });
-                var letterToCheck =">";
-                //passing parameters and calling the function
-                var arrStr = fatherId.split(/[>;]/);
-                var father_cat=arrStr[2];
-                   
-                $('#customField_4').html('');
-                $.ajax({
-                    url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
-                    type: 'get',
-                    success: function (res1) {
-                        $('#customField_4').html('<option value=""></option>');
-                        $.each(res1, function (key, value) {
-                        
-                            $('#customField_4').append('<option value="' + value
-                                .id + '">' + value.title_en+ '</option>');
-                            });
-                       
-                    }
-                });
-           
-           
-            });
-     
-   
+               
+            }
 
-       
-            $('#customField_4').on('change', function () {
-                var bookingId = this.value;
-               // alert(bookingId);   
+            function loadbillingtype() {
+                var bookingId = $("#customField_4").val(); 
+               
                 $('#customField_6').html('');
                 $.ajax({
                     url: "{{url('dashboard/getbilling')}}?father_id="+bookingId,
                     type: 'get',
                     success: function (res) {
-                    //  console.log(JSON.stringify(res));
-                        $('#customField_6').html('<option value=""></option>');
+                        var selected = $("#billing-type").val(); 
+                    
+                        $('#customField_6').html('<option value="">Billing Type</option>');
                         $.each(res, function (key, value) {
-                            console.log(value);
-                            $('#customField_6').append('<option value="' + value
-                                .id + '">' + value.title_en+ '</option>');
+                            
+                            if (value.id==selected) {
+                                    $('#customField_6').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
+                            } else {
+                                    $('#customField_6').append('<option  value="' + value
+                                        .id + '">' + value.title_en+ '</option>');
+                            }
+                           
                         });
                        
                     }
                 });
+            }
+     
+   
+
+       
+            $('#customField_4').on('change', function () {
+                loadbillingtype()
+               
             });
            
         });

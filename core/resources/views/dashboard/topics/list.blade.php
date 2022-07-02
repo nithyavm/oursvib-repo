@@ -494,7 +494,7 @@ if ($WebmasterSection->$title_var != "") {
                 "ajax": {
                     "url": "{{ route('topicsList') }}",
                     "dataType": "json",
-                    "type": "POST",
+                    "type": "GET",
                     "data": function (data) {
                         data._token = "{{csrf_token()}}";
                         data.find_q = $('#find_q').val();
