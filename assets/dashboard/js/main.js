@@ -84,6 +84,9 @@
            
             if (currentIndex == 0) var tabpanel ='#tab_details';
             if (currentIndex == 1) var tabpanel ='#tab_additional';
+            if (currentIndex == 2) var tabpanel ='#tab_activity';
+            if (currentIndex == 3) var tabpanel ='#tab_package';
+            if (currentIndex == 5) var tabpanel ='#tab_ammenities';
 
             if (currentIndex > newIndex)
                 return true
