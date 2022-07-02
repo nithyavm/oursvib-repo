@@ -13,6 +13,7 @@ use App\Models\RelatedTopic;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\Listing;
+use App\Models\AdditionalFee;
 use App\Models\TopicCategory;
 use App\Models\TopicField;
 use App\Models\WebmasterSection;
@@ -670,6 +671,12 @@ class TopicsController extends Controller
     public function edit($webmasterId, $id)
     {
         $WebmasterSection = WebmasterSection::find($webmasterId);
+        $Selected_Fee=AdditionalFee::where('topic_id',$id)->where('fee_type','Fee')->get();
+        $Selected_Include=AdditionalFee::where('topic_id',$id)->where('fee_type','Include')->get();
+        $Selected_Activity=AdditionalFee::where('topic_id',$id)->where('fee_type','Activity')->get();
+        $Selected_Package=AdditionalFee::where('topic_id',$id)->where('fee_type','Package')->get();
+        $Selected_Ammenity=AdditionalFee::where('topic_id',$id)->where('fee_type','Ammenity')->get();
+        $Selected_Facility=AdditionalFee::where('topic_id',$id)->where('fee_type','Facility')->get();
         if (!empty($WebmasterSection)) {
             // Check Permissions
             if (!@Auth::user()->permissionsGroup->edit_status) {
@@ -718,6 +725,7 @@ class TopicsController extends Controller
             if (!empty($Topics)) {
 
                 $Listing = Listing::where('list_id', '=',$Topics->id) ->get();
+                
                 //Topic Topics Details
                 $WebmasterSection = WebmasterSection::find($Topics->webmaster_id);
 
@@ -726,7 +734,8 @@ class TopicsController extends Controller
 
                 return view("dashboard.topics.edit",
                     compact("Topics","Listing", "GeneralWebmasterSections", "WebmasterSection", "fatherSections" , "BookingType"
-                    ,"Additional", "Activity","Capacity","Ammenitites","Facility","Packages"));
+                    ,"Additional", "Activity","Capacity","Ammenitites","Facility","Packages","Selected_Fee","Selected_Activity","Selected_Include",
+                    "Selected_Package","Selected_Ammenity","Selected_Facility"));
             } else {
                 return redirect()->action('Dashboard\TopicsController@index', $webmasterId);
             }
@@ -753,13 +762,14 @@ class TopicsController extends Controller
        // foreach (Helper::languagesList() as $ActiveLanguage) {
       
        // }
+      
         $WebmasterSection = WebmasterSection::find($webmasterId);
         if (!empty($WebmasterSection)) {
             //
             $Topic = Topic::find($id);
             if (!empty($Topic)) {
 
-
+               
                 $this->validate($request, [
                     'photo_file' => 'mimes:png,jpeg,jpg,gif,svg',
                     'audio_file' => 'mimes:mpga,wav', // mpga = mp3
@@ -960,11 +970,102 @@ class TopicsController extends Controller
                                 $TopicField->field_value = $field_value;
                                 $TopicField->save();
                             }
-                            
+                           
                         }
                     }
                 }
+                if($WebmasterSection->title_en == 'Listings')
+               {
+                        $Listing_id= Listing::where('list_id', $id)->first();
+                        $Listing=Listing::find($Listing_id->id);
+                        $Listing->strategic_location1 =  $request->strategic_location1;
+                        $Listing->strategic_location2 =  $request->strategic_location2;
+                        $Listing->strategic_location3 =  $request->strategic_location3;
+                        $Listing->near_by1 =  $request->near_by1;
+                        $Listing->near_by2 =  $request->near_by2;
+                        $Listing->near_by3 =  $request->near_by3;
+                        $Listing->save();
+                       
+                        if(isset($request->additional_field)){
+                            $Additional_fee=AdditionalFee::where('topic_id' , $id)->where('fee_type','Fee')->orwhere('fee_type','Include')->delete();
+                            if($request->input('include') != ''){
+                            $include_count = count($request->input('include'));
+                                for($i=0;$i<$include_count;$i++){
+                                
+                                    $AdditionalFee = new AdditionalFee;
+                                    $AdditionalFee->topic_id = $id;
+                                    $AdditionalFee->fee_type ="Include";
+                                    $AdditionalFee->fee_name = $request->input('include')[$i];
+                                    $AdditionalFee->save();
+                                    }
+                            }
+                             $count = $request->additional_field;
+                            
+                           
+                            for($i=0;$i<$count;$i++){
+                                $fee_name  = "addfeehidden_".$i;
+                                $fee_value  = "addfeeselectdivtext_".$i;
+                                $fee_text  = "addfeeselect_".$i;
+                                // $request->{$dynamicfield};
+                                $AdditionalFee = new AdditionalFee;
+                                $AdditionalFee->topic_id = $id;
+                                $AdditionalFee->fee_type ="Fee";
+                                $AdditionalFee->fee_name = $request->{$fee_name};
+                                $AdditionalFee->fee_value = $request->{$fee_value};
+                                $AdditionalFee->fee_text = $request->{$fee_text};
+                                $AdditionalFee->save();
+                            }
 
+                        }
+                        if(isset($request->tab_activity)) {
+                            $Additional_fee=AdditionalFee::where('topic_id' , $id)->where('fee_type','Activity')->delete();
+                            if($request->input('activity') != '') {
+                            $activity_count = count($request->input('activity'));
+                            $AdditionalFee = new AdditionalFee;
+                            $AdditionalFee->topic_id = $id;
+                            $AdditionalFee->fee_type ="Activity";
+                            $AdditionalFee->fee_name =json_encode( $request->activity);   
+                            $AdditionalFee->save();
+                            }
+                        }
+                        if(isset($request->tab_package)) {
+                            $Package=AdditionalFee::where('topic_id' , $id)->where('fee_type','Package')->delete();
+                            if($request->input('package_id') != '') {
+                             $package_count = count($request->input('package_id'));
+                            for($i=0;$i<$package_count;$i++){
+                                    
+                                $AdditionalFee = new AdditionalFee;
+                                $AdditionalFee->topic_id = $id;
+                                $AdditionalFee->fee_type ="Package";
+                                $AdditionalFee->fee_name = $request->input('package_id')[$i];   
+                                $AdditionalFee->save();
+                                } 
+                            }
+                        }
+                        if(isset($request->tab_ammenity)) {
+                            $Ammenity=AdditionalFee::where('topic_id' , $id)->where('fee_type','Ammenity')->orwhere('fee_type','Facility')->delete();
+
+                           //return $request->ammenity;
+                            if($request->input('ammenity') != '') {
+                                    
+                                $AdditionalFee = new AdditionalFee;
+                                $AdditionalFee->topic_id = $id;
+                                $AdditionalFee->fee_type ="Ammenity";
+                                $AdditionalFee->fee_name =json_encode( $request->ammenity);   
+                                $AdditionalFee->save();
+                            }
+                            if($request->input('facility') != '') {
+                                    
+                                $AdditionalFee = new AdditionalFee;
+                                $AdditionalFee->topic_id = $id;
+                                $AdditionalFee->fee_type ="Facility";
+                                $AdditionalFee->fee_name =json_encode( $request->facility);   
+                                $AdditionalFee->save();
+                            }
+                          
+                        }
+
+            }
                 // SEND Notification Email
                 $this->send_notification($WebmasterSection, $Topic, "Update");
 

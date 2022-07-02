@@ -1,10 +1,7 @@
 {{-- Activity --}}
 @if($WebmasterSection->capacity_status)
 <div class="tab-pane  {{ $tab_13 }}" id="tab_capacity">
-    <div class="box-body"><div id="capacity">testtt</div>
-       
-             <input type="text" name="cat_id" id="cat_id" />
-                           
+    <div class="box-body">
                            <div class="row"> 
                      
                         <div class="by-act-horizontal">

@@ -1,21 +1,26 @@
 {{-- Additional --}}
 @if($WebmasterSection->additional_fee_status)
-   
     <div class="tab-pane " id="tab_additional">
         <div class="box-body">
                 <div class="row">
+                @foreach ($Selected_Include as $inc)
+                        <?php
+                        $include_arr[] = $inc->fee_name;
+                        ?>
+                        @endforeach
                     <div class="tit-hightlight">Highlight If you have:</div>
-                                    
+                 
                                     <div class="main-check have-options">
-                                        <input type="checkbox" id="incbrkfast" name="includebrkfast" value="Free Gifts Included">
+                                        <input type="checkbox" id="incbrkfast" name="include[]" value="0" {{ in_array('0', $include_arr) ? 'checked' : '' }} >
                                         <label for="incbrkfast">Includes Free Gifts</label>
                         
-                                        <input type="checkbox" id="incwifi" name="incwifi" value="Wifi Included">
+                                        <input type="checkbox" id="incwifi" name="include[]" value="1" {{ in_array('1', $include_arr) ? 'checked' : '' }}>
                                         <label for="incwifi">Includes Free Wifi</label>
                         
-                                        <input type="checkbox" id="incpark" name="incpark" value="Car park Included">
+                                        <input type="checkbox" id="incpark" name="include[]" value="2" {{ in_array('2', $include_arr) ? 'checked' : '' }}>
                                         <label for="incpark">Includes Free Car Parking</label>
                                     </div>
+                 
                                     <div class="tit-hightlight"></div>
                     <div class="tit-hightlight">Set Your Pricings:</div> 
                     <?php  $count = 0; ?>
@@ -43,7 +48,7 @@
                                 <div class="arrow-aft">
                                     <select name="{{$addfeeselect}}" id='{{$addfeeselect}}' class="dynamic_additional_fees" >
                                         <option value="0">Included</option>                   
-                                        <option value="2">Paid, Included</option>
+                                        <option value="1">Paid, Included</option>
                                     </select>
                                 </div>
                                 <div class="add-fees" style='display:none;' id='{{$addfeeseclectdiv}}'>Price for{ { $title }} (per hour)
@@ -55,14 +60,16 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="purpose" value='{{$count}}' />
+                       
                        
                     @endforeach
+          
+                    <input type="hidden" name="additional_field" value='{{$count}}' />
+         
+                  
                 </div> 
         </div>
     </div>
-                        
-    <input type="hidden" name="section_id" id="book_id" />
     <script type="text/javascript">           
         /* 2nd */
         $(document).ready(function(){
@@ -70,10 +77,14 @@
             selected_id = this.id; 
           //  alert(selected_id)
          //   alert(this.value)
-            if (this.value == '2')
+            if (this.value == '1')
                 $("#"+selected_id+"_div").show();
             else
                 $("#"+selected_id+"_div").hide();
+            });
+
+            $('#btn_submit').on('click', function() {      
+            alert("test");
             });
         });
     </script>
