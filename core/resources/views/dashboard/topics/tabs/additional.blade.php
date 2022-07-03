@@ -5,23 +5,41 @@
                 <div class="row">
                 {!! Form::hidden('section_id',$Topics->webmaster_id) !!}
                 {!! Form::hidden('topic_id',$Topics->id) !!}
-                @foreach ($Selected_Include as $inc)
-                        <?php
-                        $include_arr = array();
-                        $include_arr[] = $inc->fee_name;
-                        ?>
-                        @endforeach
+                @if(!$Selected_Include->isEmpty())  
+                    @foreach ($Selected_Include as $inc)
+                            <?php
+                            
+                            $include_arr[] = $inc->fee_name;
+                            ?>
+                     @endforeach
+                @else
+                    <?php
+                        $include_arr[] ='' ;
+                     ?>
+                @endif
+                
                     <div class="tit-hightlight">Highlight If you have:</div>
                  
                                     <div class="main-check have-options">
+                                    @if(isset($include_arr)) 
+                                        <input type="checkbox" id="incbrkfast" name="include[]" value="0"   {{ in_array('0', $include_arr) ? 'checked' : '' }} >
+                                        <label for="incbrkfast">Includes Free Gifts</label>
+                        
+                                        <input type="checkbox" id="incwifi" name="include[]" value="1"  {{ in_array('1', $include_arr) ? 'checked' : '' }} >
+                                        <label for="incwifi">Includes Free Wifi</label>
+                        
+                                        <input type="checkbox" id="incpark" name="include[]" value="2"  {{ in_array('2', $include_arr) ? 'checked' : '' }}>
+                                        <label for="incpark">Includes Free Car Parking</label>
+                                    @else
                                         <input type="checkbox" id="incbrkfast" name="include[]" value="0"  >
                                         <label for="incbrkfast">Includes Free Gifts</label>
                         
-                                        <input type="checkbox" id="incwifi" name="include[]" value="1" 
+                                        <input type="checkbox" id="incwifi" name="include[]" value="1" >
                                         <label for="incwifi">Includes Free Wifi</label>
                         
                                         <input type="checkbox" id="incpark" name="include[]" value="2" >
                                         <label for="incpark">Includes Free Car Parking</label>
+                                    @endif
                                     </div>
                  
                                     <div class="tit-hightlight"></div>

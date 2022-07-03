@@ -6,7 +6,6 @@
                 <div class="row">
                     <div class="col-md-12 by-activity">
                         <div class="by-act-horizontal">
-                      
                             @foreach ($Activity as $Activities)
                            
                                             <?php
@@ -16,9 +15,14 @@
                                                     $act_title= $Activities->$title_var2;
                                                 }
                                                 ?>
-                               
-                                <input type="checkbox" id='{{ $act_title}}' name="activity[]" value="{{ $act_title}}" 
-                               >
+                               @if($Selected_Activity->isEmpty())
+                               <input type="checkbox" id='{{ $act_title}}' name="activity[]" value="{{ $act_title}}" >
+                            @else
+                            <input type="checkbox" id='{{ $act_title}}' name="activity[]" value="{{ $act_title}}"
+                            {{  str_contains($Selected_Activity[0]->fee_name, $act_title)  ? 'checked' : '' }} >
+                      @endif
+                              
+                
 
                                 <label for="{{ $act_title}}">{{ $act_title}}</label>
                                 @endforeach

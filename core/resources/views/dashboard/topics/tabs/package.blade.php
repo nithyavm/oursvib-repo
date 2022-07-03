@@ -4,11 +4,17 @@
     <div class="box-body">
         <div class="row"> 
             <div class="by-act-horizontal">
+            @if(!$Selected_Package->isEmpty())    
             @foreach ($Selected_Package as $pack)
                         <?php
                         $package_arr[] = $pack->fee_name;
                         ?>
                         @endforeach
+           
+       
+            @else
+           <?php $package_arr[] = '' ?>
+            @endif
                     @foreach ($Packages as $Package)
                         <?php
                             if ($Package->$title_var != "") {
@@ -35,8 +41,13 @@
                                         </ol>
                                     </div>
                                 </div>
-                                <div class="row"> <input type="checkbox" name="package_id[]" value="{{$Package->id}}"  }} /> Select {{$Package_title}}
-                                <input type="hidden" name="package_name[]" value="{{$Package_title}}" />
+                                <div class="row"> 
+                                @if(isset($package_arr))    
+                                <input type="checkbox" name="package_id[]" value="{{$Package->id}}" {{ in_array($Package->id, $package_arr) ? 'checked' : '' }} /> Select {{$Package_title}}
+                                @else
+                                    <input type="checkbox" name="package_id[]" value="{{$Package->id}}"   /> Select {{$Package_title}}
+                                @endif
+                                    <input type="hidden" name="package_name[]" value="{{$Package_title}}" />
                                 
 
                                 </div>
