@@ -2089,6 +2089,8 @@ a.list-group-item.hover {
     position: relative;
     padding-left: 20px;
     cursor: pointer;
+    width: 20%;
+    display: inline;
 }
 
 .ui-check input {

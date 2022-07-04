@@ -431,12 +431,15 @@ if ($WebmasterSection->$title_var != "") {
                                         $t_arrow = ">";
                                         $categories = array();
                                         foreach ($Topics->categories as $category) {
-                                            $categories[] = $category->section_id;
-                                        } 
+                                            $categories[] = $category->section_id; ?>
+                                            <input type="hidden" name="category" id="category" value="{{ $category->section_id}}" />      
+
+                                        <?php } 
                                         
-                                       
+                                     //  print_r($categories);
                                         
-                                ?>                   
+                                ?>   
+                                         
                                 <label for="category_id" class="col-sm-2 form-control-label">{!!  __('backend.hasCategories') !!} </label>
                                 <div class="col-sm-10">
                                     <select name="category_id[]" id="category_id" class="form-control select2-multiple" ui-jp="select2"  ui-options="{theme: 'bootstrap'}" required>
@@ -490,7 +493,10 @@ if ($WebmasterSection->$title_var != "") {
                         
                             {!! Form::hidden('section_id',$Topics->webmaster_id) !!}
                             {!! Form::hidden('topic_id',$Topics->id) !!}
-                        @endif                           
+                        @endif 
+
+                       
+
                         
                         @if($WebmasterSection->title_status)
                             @foreach(Helper::languagesList() as $ActiveLanguage)
@@ -505,6 +511,58 @@ if ($WebmasterSection->$title_var != "") {
                                     </div>
                                 @endif
                             @endforeach
+                        @endif
+
+                        @if($WebmasterSection->title_en == "Listings")   
+                        <div class='form-group row by-activity'>
+                                        <h4> Bookings and Billings </h4>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">Booking Type</div>
+                            <div class="col-sm-2">Billing Type</div>
+                            <div class="col-sm-1">Unified Price</div>
+                            <div class="col-sm-1">Discount %</div>
+                            <div class="col-sm-2">Peak Season Price</div>
+                            <div class="col-sm-2">Guaranteed Price </div>
+                            <div class="col-sm-0">                           
+                                                    
+                              </div>
+                           
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-sm-2">                                             
+                            <select  name="booking_type[]" id="booking_type[]" class="form-control selectbooking" aria-invalid="false"><option value="">Booking Type</option></select>
+                            </div>
+                            <div class="col-sm-2">
+                            <select name="billing_type[]" id="billing_type[]" class="form-control selectbilling" aria-invalid="false"><option value="">Billing Type</option></select>
+                            </div>
+                            <div class="col-sm-1">
+                                            {!! Form::text('u_price[]','', array('placeholder' => 'Unified Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                            </div>
+                            <div class="col-sm-1">
+                                            {!! Form::text('d_per[]','', array('placeholder' => 'Discount %','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                            </div>
+                            <div class="col-sm-2">
+                                            {!! Form::text('p_price','', array('placeholder' => 'Peak Season Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                            </div>
+                            <div class="col-sm-2">
+                                            {!! Form::text('l_price','', array('placeholder' => 'Guaranteed Low Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                                            
+                            </div>
+                            <div class="col-sm-0">
+                            <div class="nav-link"  onclick="booking_fields();" data-toggle="dropdown">
+
+                            <i class="fa fa-fw fa-plus text-muted"></i>
+
+                            </div>
+                           
+                            </div>                                        
+                        </div>
+                        <div class="form-group row" id="booking_fields">
+          
+                        </div>
+                        
                         @endif
 
                         @if($WebmasterSection->longtext_status)
@@ -763,18 +821,13 @@ if ($WebmasterSection->$title_var != "") {
                             @foreach($WebmasterSection->customFields as $customField)                            
                                 <?php
                                     if ($previous_class != $customField->css_class)
-                                    if($customField->css_class == 'booking-and-bill'){
-                                   // echo  "subhashini  -   ". $customField->css_class;
-                                        echo " <div class='form-group row by-activity'>
-                                        <h4> Bookings and Billings </h4>
-                                        </div>";
-                                    }
-                                   else{
+                                    
+                                  
                                         // echo  "subhashini  -   ". $customField->css_class;
                                              echo " <div class='form-group row by-activity'>
                                              <h4> Others </h4>
                                              </div>";
-                                         }
+                                        
                                 ?>
                                
                                 <?php
@@ -1013,7 +1066,7 @@ if ($WebmasterSection->$title_var != "") {
                                                 {!! $cf_land_identifier !!}
                                             
                                             
-                                            <input type="hidden" name="{!! $cf_seo_title!!}" id="{!! $cf_seo_title!!}" value="{!! $cf_saved_val !!}" />
+                                            <input type="text" name="{!! $cf_seo_title!!}" id="{!! $cf_seo_title!!}" value="{!! $cf_saved_val !!}" />
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="{{'customField_'.$customField->id}}"
@@ -1467,80 +1520,62 @@ if ($WebmasterSection->$title_var != "") {
         }
     </script>
         <script type="text/javascript">
-        //      $(document).ready(function () {
-        //     $('#father_id').on('change', function () {
-        //         var fatherId = this.value;
-        //         $("#booking_div").show(); 
-               
-        //     });
-           
-        // });
+       
         $(document).ready(function () {
-            loadbookingtype()
-           
-               
-           
+            loadbookingtype(0)        
             $('#category_id').on('change', function () {
-                loadbookingtype();           
-            });
+                loadbookingtype(0);           
+            });            
+        });
 
-            function loadbookingtype(setselect) {
-                var fatherId = $('#category_id').find("option:selected").text();
-                var catId = $("#category_id").val();       
-                $('#capacity').html('');
+        function loadbookingtype(setselect) {         
                 $.ajax({
-                    url: "{{url('dashboard/getparent')}}?parent_id="+catId,
+                    url: "{{url('dashboard/getbooking')}}?father_id="+$("#category").val(),
                     type: 'get',
-                    success: function (res1) {     
-                        $('#customField_4').val(res1);            
-                        var letterToCheck =">";
-                        //passing parameters and calling the function
-                        var arrStr = fatherId.split(/[>;]/);
-                        var father_cat=arrStr[2];
-                        
-                        $('#customField_4').html('');
-                        $.ajax({
-                            url: "{{url('dashboard/getbooking')}}?father_id="+father_cat,
-                            type: 'get',
-                            success: function (res1) {
-                                $('#customField_4').html('<option value="">Booking Type</option>');
+                    success:loadbooking(setselect)
+                    
+                });      
+        }
+
+        var loadbooking = function(setselect) {
+           // alert("hi"+setselect)
+        return function(res1) {
+            varname=  'select[name="booking_type[]"]:eq('+setselect+')';
+                      // alert(varname)
+                        $(varname).html('<option value="">Booking Type</option>');
                                 $.each(res1, function (key, value) {
                                 var selected = $("#booking-type").val();                            
                                 if (value.id==selected) {
-                                    $('#customField_4').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
+                                    $(varname).append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
                                 } else {
-                                    $('#customField_4').append('<option  value="' + value
+                                    $(varname).append('<option  value="' + value
                                         .id + '">' + value.title_en+ '</option>');
                                 }
-                                });  
-                                loadbillingtype();
-                                           
-                            }
-                        });                 
-                        
-                     
-                    }
-                });
-               
-            }
+                        });  
+                        loadbillingtype(setselect);   
+        };
+      };
 
-            function loadbillingtype() {
-                var bookingId = $("#customField_4").val(); 
+      
+
+            function loadbillingtype(setselect) {
+               // alert("billing set select" +setselect )
+                var bookingId = $('select[name="booking_type[]"]:eq('+setselect+')').val(); 
                
-                $('#customField_6').html('');
+                $('select[name="billing_type[]"]:eq('+setselect+')').html('');
                 $.ajax({
                     url: "{{url('dashboard/getbilling')}}?father_id="+bookingId,
                     type: 'get',
                     success: function (res) {
                         var selected = $("#billing-type").val(); 
                     
-                        $('#customField_6').html('<option value="">Billing Type</option>');
+                        $('select[name="billing_type[]"]:eq('+setselect+')').html('<option value="">Billing Type</option>');
                         $.each(res, function (key, value) {
                             
                             if (value.id==selected) {
-                                    $('#customField_6').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
+                                $('select[name="billing_type[]"]:eq('+setselect+')').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
                             } else {
-                                    $('#customField_6').append('<option  value="' + value
+                                $('select[name="billing_type[]"]:eq('+setselect+')').append('<option  value="' + value
                                         .id + '">' + value.title_en+ '</option>');
                             }
                            
@@ -1549,18 +1584,8 @@ if ($WebmasterSection->$title_var != "") {
                     }
                 });
             }
-     
-   
 
-       
-            $('#customField_4').on('change', function () {
-                loadbillingtype()
-               
-            });
-           
-        });
-
-        function countString(str, letter) {
+function countString(str, letter) {
 
 // creating regex 
 const re = new RegExp(letter, 'g');
@@ -1571,6 +1596,38 @@ const count = str.match(re).length;
 return count;
 }
 
+var room = 0;
+function booking_fields() {
+ 
+    room++;
+    var objTo = document.getElementById('booking_fields')
+    var divtest = document.createElement("div");
+	divtest.setAttribute("class", "form-group removeclass"+room);
+	var rdiv = 'removeclass'+room;
+    divtest.innerHTML = '<div class="form-group row">';
+    divtest.innerHTML += '<div class="col-sm-2"><select  name="booking_type[]" id="booking_type[]"  class="form-control selectbooking" aria-invalid="false"></select></div>';
+    divtest.innerHTML += '<div class="col-sm-2"><select name="billing_type[]" id="billing_type[]" class="form-control selectbilling" aria-invalid="false"></select></div>';
+    divtest.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Unified Price" name="u_price[]" /></div>';
+    divtest.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Discount %" name="d_per[]" /></div>';
+    divtest.innerHTML += '<div class="col-sm-2"><input type="text" class="form-control" placeholder="Peak Season Price" name="p_price[]" /></div>';
+    divtest.innerHTML += '<div class="col-sm-2"><input type="text" class="form-control" placeholder="Guaranteed Low Price" name="l_price[]" /></div>';
+    divtest.innerHTML += '<div class="col-sm-0"><div class="nav-link"  onclick="remove_booking_fields('+ room +');" data-toggle="dropdown"><i class="fa fa-fw fa-minus text-muted"></i></div></div></div>';
+    objTo.appendChild(divtest);
+    $.when( $("#booking_fields").length > 0).then(function(){  
+      //  alert(room)  
+        loadbookingtype(room)
+    });
+    
+}
+   function remove_booking_fields(rid) {
+	   $('.removeclass'+rid).remove();
+   }
+
+   $(document).on('change','.selectbooking',function(){
+        //alert(this.selectedIndex)
+       // alert("going to load billing")
+        loadbillingtype(this.selectedIndex)
+    });
 
 
 

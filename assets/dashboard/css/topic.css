@@ -35,7 +35,11 @@
   .is-hide{
     display:none;
   }
-
+ 
+  .col-sm-1 {
+      float: left;
+      width: 14% !important;
+  }
 .video-container, .map-container, .embed-container {
     position: relative;
     margin: 0 0 15px 0;

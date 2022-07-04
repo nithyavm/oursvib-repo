@@ -889,9 +889,9 @@ class TopicsController extends Controller
 
                 $Topic->icon = $request->icon;
                 $Topic->video_type = $request->video_type;
-                if ($WebmasterSection->case_status) {
+                //if ($WebmasterSection->case_status) {
                     $Topic->status = $request->status;
-                }
+                //}
                 if (!@Auth::user()->permissionsGroup->active_status) {
                     $Topic->status = 0;
                 }
@@ -917,6 +917,7 @@ class TopicsController extends Controller
                 if (count($WebmasterSection->customFields) > 0) {
                     foreach ($WebmasterSection->customFields as $customField) {
                         // check permission
+                     //   return $WebmasterSection->customFields;
                         $edit_permission_groups = [];
                         if ($customField->edit_permission_groups != "") {
                             $edit_permission_groups = explode(",", $customField->edit_permission_groups);
@@ -924,8 +925,8 @@ class TopicsController extends Controller
                         if (in_array(Auth::user()->permissions_id, $edit_permission_groups) || in_array(0, $edit_permission_groups) || $customField->edit_permission_groups == "") {
                             // have permission & continue
 
-                            // Remove old Fields Values
-                            TopicField::where('topic_id', $Topic->id)->where('field_id', $customField->id)->delete();
+                            
+                            
 
                             $field_value = "";
                             $field_value_var = "customField_" . $customField->id;
@@ -966,6 +967,8 @@ class TopicsController extends Controller
                                 $field_value = $request->$field_value_var;
                             }
                             if ($field_value != "") {
+                                // Remove old Fields Values
+                                TopicField::where('topic_id', $Topic->id)->where('field_id', $customField->id)->delete();
                                 $TopicField = new TopicField;
                                 $TopicField->topic_id = $Topic->id;
                                 $TopicField->field_id = $customField->id;
@@ -975,11 +978,13 @@ class TopicsController extends Controller
                            
                         }
                     }
+                } else {
+                    return "Not Having Custom Fields";
                 }
                 if($WebmasterSection->title_en == 'Listings')
                {
-                        $Listing_id= Listing::where('list_id', $id)->first();
-                        $Listing=Listing::find($Listing_id->id);
+                        $Listing= Listing::where('list_id', $Topic->id)->first();
+                      
                         $Listing->strategic_location1 =  $request->strategic_location1;
                         $Listing->strategic_location2 =  $request->strategic_location2;
                         $Listing->strategic_location3 =  $request->strategic_location3;

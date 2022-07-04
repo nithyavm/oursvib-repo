@@ -380,7 +380,7 @@ class CategoriesController extends Controller
     public function getBooking(Request $request)
     {
        // return $request->father_id;
-           $BookingType = Section::where('webmaster_id', '=','10')->where('title_en', '=' ,  $request->father_id)->select('booking_type')->get();
+           $BookingType = Section::where('webmaster_id', '=','10')->where('id',  $request->father_id)->select('booking_type')->get();
          foreach ($BookingType as $booking) {
               $bookings= $booking->booking_type;
         }

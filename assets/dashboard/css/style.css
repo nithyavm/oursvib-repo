@@ -110,7 +110,7 @@ h2 {
     width: 266px; }
 
 label {
-  display: block;
+  /* display: block; */
   width: 100%;
   font-size: 13px;
   font-weight: 400;
