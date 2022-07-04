@@ -1539,7 +1539,7 @@ if ($WebmasterSection->$title_var != "") {
 
         var loadbooking = function(setselect) {
            // alert("hi"+setselect)
-        return function(res1) {
+            return function(res1) {
             varname=  'select[name="booking_type[]"]:eq('+setselect+')';
                       // alert(varname)
                         $(varname).html('<option value="">Booking Type</option>');
@@ -1552,38 +1552,41 @@ if ($WebmasterSection->$title_var != "") {
                                         .id + '">' + value.title_en+ '</option>');
                                 }
                         });  
-                        loadbillingtype(setselect);   
+                        loadbillingtype(setselect,'');   
         };
       };
 
       
 
-            function loadbillingtype(setselect) {
-               // alert("billing set select" +setselect )
-                var bookingId = $('select[name="booking_type[]"]:eq('+setselect+')').val(); 
-               
+            function loadbillingtype(setselect,bookingId) {
+               // alert("billing set select" +setselect )                
+               // alert(bookingId)
                 $('select[name="billing_type[]"]:eq('+setselect+')').html('');
                 $.ajax({
                     url: "{{url('dashboard/getbilling')}}?father_id="+bookingId,
                     type: 'get',
-                    success: function (res) {
-                        var selected = $("#billing-type").val(); 
-                    
-                        $('select[name="billing_type[]"]:eq('+setselect+')').html('<option value="">Billing Type</option>');
-                        $.each(res, function (key, value) {
-                            
-                            if (value.id==selected) {
-                                $('select[name="billing_type[]"]:eq('+setselect+')').append('<option selected="selected" value="' + value.id + '">' + value.title_en+ '</option>');
-                            } else {
-                                $('select[name="billing_type[]"]:eq('+setselect+')').append('<option  value="' + value
-                                        .id + '">' + value.title_en+ '</option>');
-                            }
-                           
-                        });
-                       
-                    }
+                    success: loadbilling(setselect)
                 });
             }
+
+
+            var loadbilling = function(setselect) {
+              // alert("hi"+setselect)
+                return function(res) {
+                    varname=  'select[name="billing_type[]"]:eq('+setselect+')';
+                  //  alert(varname)
+                    selected='';
+                    $(varname).html('<option value="">Billing Type</option>');
+                    $.each(res, function (key, value) {                            
+                            
+                                $(varname).append('<option  value="' + value
+                                        .id + '">' + value.title_en+ '</option>');
+                           
+                           
+                    });
+                };
+      };
+
 
 function countString(str, letter) {
 
@@ -1623,10 +1626,18 @@ function booking_fields() {
 	   $('.removeclass'+rid).remove();
    }
 
+   $('.selectbooking').change(function(){
+    alert($(this).index());
+    sindex=$(this).index();
+    var bookingId =$(this).val(); 
+    loadbillingtype(sindex,bookingId)
+  });
+
    $(document).on('change','.selectbooking',function(){
-        //alert(this.selectedIndex)
-       // alert("going to load billing")
-        loadbillingtype(this.selectedIndex)
+  //  alert($(this).index(".selectbooking"));
+    sindex=$(this).index(".selectbooking");
+    var bookingId =$(this).val(); 
+    loadbillingtype(sindex,bookingId)
     });
 
 
