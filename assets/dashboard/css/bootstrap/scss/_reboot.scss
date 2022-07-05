@@ -358,7 +358,7 @@ fieldset {
   // Reset the default outline behavior of fieldsets so they don't affect page layout.
   padding: 0;
   margin: 0;
-  border: 0;
+  border: 1px solid #0cc2aa;
 }
 
 legend {

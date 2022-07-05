@@ -987,8 +987,6 @@ class TopicsController extends Controller
                             
                             }
                         }
-                    } else {
-                        return "Not Having Custom Fields";
                     }
                     if($WebmasterSection->title_en == 'Listings')
                     {
