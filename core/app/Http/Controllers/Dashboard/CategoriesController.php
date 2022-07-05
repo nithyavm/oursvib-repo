@@ -394,10 +394,15 @@ class CategoriesController extends Controller
    
     public function getBilling(Request $request)
     {
-        $BillingType = Section::where('webmaster_id', '=','12')->where('father_id', '=' , $request->father_id)->get();
-        
-        if (count($BillingType) > 0) {
-            return response()->json($BillingType);
+        if ($request->father_id === 'undefined') {
+            return 0;
+            
+        } else {
+            $BillingType = Section::where('webmaster_id', '=','12')->where('father_id', '=' , $request->father_id)->get();
+            
+            if (count($BillingType) > 0) {
+                return response()->json($BillingType);
+            }return 0;
         }
     }
     public function getSubCategory(Request $request)

@@ -11,7 +11,6 @@
                     <span class="text-muted block m-b-lg">( {{ __('backend.topicDropFiles2') }}
                                         )</span>
                 </div>
-                <input type="submit" name="submit" />
                 {{Form::close()}}
                 <br>
             </div>
