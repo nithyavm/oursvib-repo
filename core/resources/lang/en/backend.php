@@ -144,6 +144,7 @@ return array(
     'attachDescription' => 'Description',
     'attachBilling' => 'Billing',
     'additionalFees' => 'Additional Fees',
+    'additionalVideos' => 'videos',
     'byActivity' => 'By Activity',
     'package' => 'Packages',
     'capacity' => 'Capacity',

@@ -38,8 +38,13 @@
  
   .col-sm-1 {
       float: left;
-      width: 14% !important;
+      width: 12% !important;
   }
+
+  .col-sm-0 {
+    float: left;
+    width: 8% !important;
+}
 
 
 

@@ -126,6 +126,7 @@ Route::post('/{webmasterId}/topics/{id}/seo', [TopicsController::class, 'seo'])-
 // Topics :Photos
 Route::post('/topics/upload', [TopicsController::class, 'upload'])->name('topicsPhotosUpload');
 Route::post('/{webmasterId}/topics/{id}/photos', [TopicsController::class, 'photos'])->name('topicsPhotosEdit');
+Route::post('/{webmasterId}/topics/{id}/videos', [TopicsController::class, 'videos'])->name('topicsVideosEdit');
 Route::get('/{webmasterId}/topics/{id}/photos/{photo_id}/destroy',
     [TopicsController::class, 'photosDestroy'])->name('topicsPhotosDestroy');
 Route::post('/{webmasterId}/topics/{id}/photos/updateAll',

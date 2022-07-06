@@ -263,10 +263,10 @@ if ($WebmasterSection->$title_var != "") {
                                     ?>
                             <label class="ui-check ui-check-md">
                             @if (in_array($booking->id, $bookings))
-                            {!! Form::checkbox('booking_type[]',$booking->id, true, array('id' => $booking->id  ,'class'=>'has-value')) !!}
+                                {!! Form::checkbox('booking_type[]',$booking->id, true, array('id' => $booking->id  ,'class'=>'has-value')) !!}
                             @else
                                 {!! Form::checkbox('booking_type[]',$booking->id, false, array('id' => $booking->id  ,'class'=>'has-value')) !!}
-                                @endif
+                            @endif
                            
                                
                                 

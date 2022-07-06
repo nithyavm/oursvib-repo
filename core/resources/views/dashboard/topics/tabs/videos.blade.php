@@ -136,6 +136,7 @@
                 {{Form::close()}}
                 <br>
             </div>
+            @if(isset($Topics->videos))
             @if(count($Topics->videos)>0)
                 <div class="row">
                     {{Form::open(['route'=>['topicsVideosUpdateAll',$WebmasterSection->id,$Topics->id],'method'=>'post'])}}
@@ -253,6 +254,7 @@
 
                     {{Form::close()}}
                 </div>
+            @endif
             @endif
         </div>
     </div>

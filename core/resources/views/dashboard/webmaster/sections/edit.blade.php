@@ -414,6 +414,25 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="multi_video_status1"
+                                   class="col-sm-2 form-control-label">{!!  __('backend.additionalVideos') !!}</label>
+                            <div class="col-sm-10">
+                                <div class="radio">
+                                    <label class="ui-check ui-check-md">
+                                        {!! Form::radio('multi_video_status','1',($WebmasterSections->multi_video_status==1) ? true : false, array('id' => 'multi_video_status1','class'=>'has-value')) !!}
+                                        <i class="dark-white"></i>
+                                        {{ __('backend.yes') }}
+                                    </label>
+                                    &nbsp; &nbsp;
+                                    <label class="ui-check ui-check-md">
+                                        {!! Form::radio('multi_video_status','0',($WebmasterSections->multi_video_status==0) ? true : false, array('id' => 'multi_video_status2','class'=>'has-value')) !!}
+                                        <i class="dark-white"></i>
+                                        {{ __('backend.no') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="extra_attach_file_status1"
                                    class="col-sm-2 form-control-label">{!!  __('backend.attachBilling') !!}</label>
                             <div class="col-sm-10">

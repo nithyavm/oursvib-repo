@@ -21,7 +21,8 @@ class CreateBookAndBillTable extends Migration
             $table->string('u_price')->nullable();
             $table->string('d_price')->nullable();
             $table->string('p_price')->nullable();
-            $table->string('l_price')->nullable();           
+            $table->string('l_price')->nullable(); 
+            $table->tinyInteger('status')->default('1');          
             $table->timestamps();
         });
     }

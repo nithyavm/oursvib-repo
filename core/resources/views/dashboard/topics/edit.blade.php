@@ -10,12 +10,7 @@ if ($WebmasterSection->$title_var != "") {
 ?>
 
 @section('title', $Topics->{"title_" . @Helper::currentLanguage()->code})
-@push("after-styles")
-    <link href="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css") }}" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-@endpush
+
 @section('content')
 <div id="overlay">
   <div class="cv-spinner">
@@ -71,6 +66,7 @@ if ($WebmasterSection->$title_var != "") {
         $tab_12 = "";
         $tab_13 = "";
         $tab_14 = "";
+        $tab_15 = "";
         if (Session::has('activeTab')) {
             if (Session::get('activeTab') == "seo") {
                 $tab_1 = "";
@@ -87,6 +83,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "photos") {
                 $tab_1 = "";
@@ -103,6 +100,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "comments") {
                 $tab_1 = "";
@@ -119,6 +117,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "maps") {
                 $tab_1 = "";
@@ -135,6 +134,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "files") {
                 $tab_1 = "";
@@ -151,6 +151,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "related") {
                 $tab_1 = "";
@@ -167,6 +168,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "bill") {
                 $tab_1 = "";
@@ -183,6 +185,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "desc") {
                 $tab_1 = "";
@@ -199,6 +202,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "additional") {
                 $tab_1 = "";
@@ -215,6 +219,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "activity") {
                 $tab_1 = "";
@@ -231,6 +236,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
 
             }
             if (Session::get('activeTab') == "package") {
@@ -248,6 +254,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "active";
                 $tab_13 = "";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "capacity") {
                 $tab_1 = "";
@@ -264,6 +271,7 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "active";
                 $tab_14 = "";
+                $tab_15 = "";
             }
             if (Session::get('activeTab') == "ammenity") {
                 $tab_1 = "";
@@ -280,6 +288,24 @@ if ($WebmasterSection->$title_var != "") {
                 $tab_12 = "";
                 $tab_13 = "";
                 $tab_14 = "active";
+                $tab_15 = "";
+            }
+            if (Session::get('activeTab') == "videos") {
+                $tab_1 = "";
+                $tab_2 = "";
+                $tab_3 = "";
+                $tab_4 = "";
+                $tab_5 = "";
+                $tab_6 = "";
+                $tab_7 = "";
+                $tab_8 = "";
+                $tab_9 = "";
+                $tab_10 = "";
+                $tab_11= "";
+                $tab_12 = "";
+                $tab_13 = "";
+                $tab_14 = "";
+                $tab_15 = "active";
             }
         }
     ?>
@@ -298,6 +324,9 @@ if ($WebmasterSection->$title_var != "") {
                 <fieldset>
                     <div  class="tab-pane  {{ $tab_1 }}" id="tab_details">          
                         <div class="box-body">
+                            <input type="hidden" name="section_id" id="section_id" value="{{$Topics->webmaster_id}}" />
+                            <input type="hidden" name="topic_id" id="topic_id" value="{{$Topics->id}}" />
+                       
                         
                                 @if($WebmasterSection->date_status)
                                     <div class="form-group row">
@@ -428,8 +457,7 @@ if ($WebmasterSection->$title_var != "") {
                                         </div>
                                     </div>                            
                                 
-                                    {!! Form::hidden('section_id',$Topics->webmaster_id) !!}
-                                    {!! Form::hidden('topic_id',$Topics->id) !!}
+                                   
                                 @endif 
 
                             
@@ -458,12 +486,11 @@ if ($WebmasterSection->$title_var != "") {
                                         <div class="col-sm-2">Booking Type</div>
                                         <div class="col-sm-2">Billing Type</div>
                                         <div class="col-sm-1">Unified Price</div>
-                                        <div class="col-sm-1">Discount %</div>
-                                        <div class="col-sm-2">Peak Season Price</div>
-                                        <div class="col-sm-2">Guaranteed Price </div>
-                                        <div class="col-sm-0">                           
-                                                                
-                                        </div>
+                                        <div class="col-sm-0">Discount %</div>
+                                        <div class="col-sm-1">Peak Season Price</div>
+                                        <div class="col-sm-2">Guaranteed (21 -100)% </div>
+                                        <div class="col-sm-1">Status </div>
+                                        <div class="col-sm-0">  </div>
                                     
                                     </div>
                                 
@@ -483,15 +510,29 @@ if ($WebmasterSection->$title_var != "") {
                                             <div class="col-sm-1">
                                                             {!! Form::text('u_price[]',$bab->u_price, array('placeholder' => 'Unified Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                             </div>
-                                            <div class="col-sm-1">
-                                                            {!! Form::text('d_per[]',$bab->d_price, array('placeholder' => 'Discount %','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                                            <div class="col-sm-0">
+                                            <select name="d_per[]" id="d_per[]" class="form-control selectbilling" aria-invalid="false"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option></select>
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-1">
                                                             {!! Form::text('p_price[]',$bab->p_price, array('placeholder' => 'Peak Season Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                             </div>
-                                            <div class="col-sm-2">
-                                                            {!! Form::text('l_price[]',$bab->l_price, array('placeholder' => 'Guaranteed Low Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                                            <div class="col-sm-1">
+                                                            {!! Form::text('l_price[]',$bab->l_price, array('placeholder' => 'Guaranteed %','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                                             
+                                            </div>
+                                          
+                                                            
+                                           
+                                            <div class="col-sm-1">
+                                            <select name="bill_status[]" id="bill_status[]" class="form-control selectbilling" aria-invalid="false">
+                                                @for ($i = 0; $i <= 1; $i++)
+                                                    @if($bab->status === $i)
+                                                    <option value="{{ $i }}" selected="selected" >@if($i == 0) Inactive @else Active @endif</option>
+                                                    @else 
+                                                    <option value="{{ $i }}" >@if($i == 0) Inactive @else Active @endif</option>
+                                                    @endif
+                                                @endfor
+                                            </select>
                                             </div>
                                             <div class="col-sm-0">
                                                 @if($loop->index === 0)
@@ -517,17 +558,25 @@ if ($WebmasterSection->$title_var != "") {
                                                 <div class="col-sm-1">
                                                                 {!! Form::text('u_price[]','', array('placeholder' => 'Unified Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                                 </div>
-                                                <div class="col-sm-1">
-                                                                {!! Form::text('d_per[]','', array('placeholder' => 'Discount %','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
+                                                <div class="col-sm-0">
+                                                    <select name="d_per[]" id="d_per[]" class="form-control selectbilling" aria-invalid="false"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option></select>
                                                 </div>
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-1">
                                                                 {!! Form::text('p_price[]','', array('placeholder' => 'Peak Season Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                                 </div>
                                                 <div class="col-sm-2">
                                                                 {!! Form::text('l_price[]','', array('placeholder' => 'Guaranteed Low Price','class' => 'form-control','required'=>'', 'dir'=>@$ActiveLanguage->direction)) !!}
                                                                 
                                                 </div>
+                                                <div class="col-sm-1">
+                                                    <select name="bill_status[]" id="bill_status[]" class="form-control selectbilling" aria-invalid="false">
+                                                    @for ($i = 0; $i <= 1; $i++)                                                        
+                                                        <option value="{{ $i }}" >@if($i == 0) Inactive @else Active @endif</option>                                                       
+                                                    @endfor
+                                                    </select>                                                    
+                                                </div>
                                                 <div class="col-sm-0">
+
                                                     <div class="nav-link"  onclick="booking_fields();" data-toggle="dropdown">
                                                     <i class="fa fa-fw fa-plus text-muted"></i>
                                                     </div>
@@ -1328,6 +1377,15 @@ if ($WebmasterSection->$title_var != "") {
                                     @include('dashboard.topics.tabs.photos')
                 </fieldset>
                 @endif
+                @if($WebmasterSection->multi_video_status)
+                <h3>
+                                    <span class="icon"><i class="ti-email"></i></span>
+                                    <span class="title_text">Videos</span>
+                </h3>
+                <fieldset> 
+                                    @include('dashboard.topics.tabs.videos')
+                </fieldset>
+                @endif
             {{Form::close()}}  
         </div>
     </div>
@@ -1339,6 +1397,7 @@ if ($WebmasterSection->$title_var != "") {
 
 
 @push("after-scripts")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.js"></script>
     <script type="text/javascript">
         $("#checkAll").click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
@@ -1399,10 +1458,10 @@ if ($WebmasterSection->$title_var != "") {
 
     </script>
 
-    <script src="{{ asset("assets/dashboard/js/iconpicker/fontawesome-iconpicker.js") }}"></script>
+    <script src="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.js') }}"></script>
     <script>
         $(function () {
-            $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
+          //  $('.icp-auto').iconpicker({placement: '{{ (@Helper::currentLanguage()->direction=="rtl")?"topLeft":"topRight" }}'});
         });
 
         // Js Slug
@@ -1448,7 +1507,7 @@ if ($WebmasterSection->$title_var != "") {
     
     <script>
         function sendFile(file, editor, welEditable, lang) {
-            alert("hi")
+           // alert("hi")
             data = new FormData();
             data.append("file", file);
             data.append("_token", "{{csrf_token()}}");
@@ -1489,30 +1548,55 @@ if ($WebmasterSection->$title_var != "") {
         }
     </script>
         <script type="text/javascript">
-       
-        $(document).ready(function () {
 
-           loadbookingtype(0) 
-           
-            $('#category_id').on('change', function () {
-             //  alert($("#category").val())
-                    loadbookingtype(0)   
-                       
-            });            
+
+Dropzone.autoDiscover = false;
+    $(document).ready(function(){
+        if( $('#category').length )  { 
+                loadbookingtype(0) 
+            }        
+        $('#category_id').on('change', function () {             
+                    loadbookingtype(0)                          
+            });   
+        var myDropzone = new Dropzone("#multipleFileUpload", 
+        {
+            url:"{{url('dashboard/')}}/"+$("#section_id").val()+"/topics/"+$("#topic_id").val()+"/photos",            
+            maxFiles: 10,
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            init: function () {
+                var submitButton = document.querySelector("#submit");
+                myDropzone = this;
+                submitButton.addEventListener("click", function() {
+                    myDropzone.processQueue(); 
+                });
+
+                this.on('complete', function(){
+                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+                        var _this = this;
+                        _this.removeAllFiles();
+                    }
+                });
+            }
         });
+    });
+      
+       
 
         function loadbookingtype(setselect) {    
-           // alert("in load booking" +setselect)     
+           //alert("in load booking" +setselect)  
+           if( $('#category').length )  {     // use this if you are using class to check
                 $.ajax({
                     url: "{{url('dashboard/getbooking')}}?father_id="+$("#category").val(),
                     type: 'get',
                     success:loadbooking(setselect)
                     
-                });      
+                }); 
+            }     
         }
 
         var loadbooking = function(setselect) {
-           // alert("hi"+setselect)
+          //  alert("hi"+setselect)
             return function(res1) {
             varname=  'select[name="booking_type[]"]:eq('+setselect+')';
             varhidden=  'input[name="booking_hidden[]"]:eq('+setselect+')';
@@ -1591,22 +1675,23 @@ return count;
 
 
 function booking_fields() {
- var room = $('.selectbooking').length
-console.log(room)
+    var room = $('.selectbooking').length
+    console.log(room)
    // alert(room)
     var objTo = document.getElementById('booking_fields')
-    var divtest = document.createElement("div");
-	divtest.setAttribute("class", "form-group removeclass"+room);
-	var rdiv = 'removeclass'+room;
-    divtest.innerHTML = '<div class="form-group row">';
-    divtest.innerHTML += '<div class="col-sm-2"><select  name="booking_type[]" id="booking_type[]"  class="form-control selectbooking" aria-invalid="false"></select></div>';
-    divtest.innerHTML += '<div class="col-sm-2"><select name="billing_type[]" id="billing_type[]" class="form-control selectbilling" aria-invalid="false"></select></div>';
-    divtest.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Unified Price" name="u_price[]" /></div>';
-    divtest.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Discount %" name="d_per[]" /></div>';
-    divtest.innerHTML += '<div class="col-sm-2"><input type="text" class="form-control" placeholder="Peak Season Price" name="p_price[]" /></div>';
-    divtest.innerHTML += '<div class="col-sm-2"><input type="text" class="form-control" placeholder="Guaranteed Low Price" name="l_price[]" /></div>';
-    divtest.innerHTML += '<div class="col-sm-0"><div class="nav-link"  onclick="remove_booking_fields('+ room +');" data-toggle="dropdown"><i class="fa fa-fw fa-minus text-muted"></i></div></div></div>';
-    objTo.appendChild(divtest);
+  //  var divtest = document.createElement("div");
+	objTo.setAttribute("class", "form-group row removeclass"+room);
+
+   
+    objTo.innerHTML += '<div class="col-sm-2"><select  name="booking_type[]" id="booking_type[]"  class="form-control selectbooking" aria-invalid="false"></select></div>';
+    objTo.innerHTML += '<div class="col-sm-2"><select name="billing_type[]" id="billing_type[]" class="form-control selectbilling" aria-invalid="false"></select></div>';
+    objTo.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Unified Price" name="u_price[]" /></div>';
+    objTo.innerHTML += '<div class="col-sm-0"><select name="d_per[]" id="d_per[]" class="form-control selectbilling" aria-invalid="false"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option></select></div>';
+    objTo.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Peak Season Price" name="p_price[]" /></div>';
+    objTo.innerHTML += '<div class="col-sm-1"><input type="text" class="form-control" placeholder="Guaranteed %" name="l_price[]" /></div>';
+    objTo.innerHTML += '<div class="col-sm-1"><select id="bill_status[]"  name="bill_status[]"  class="form-control"><option value="0">Inactive</option><option value="1">Active</option></select>';
+    objTo.innerHTML += '<div class="col-sm-0"><div class="nav-link"  onclick="remove_booking_fields('+ room +');" data-toggle="dropdown"><i class="fa fa-fw fa-minus text-muted"></i></div></div>';
+ 
     $.when( $("#booking_fields").length > 0).then(function(){  
       //  alert(room)  
         loadbookingtype(room)
@@ -1636,12 +1721,18 @@ console.log(room)
     </script>
 
 
-      <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="{{ asset('assets/dashboard/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('assets/dashboard/vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>
     <script src="{{ asset('assets/dashboard/vendor/jquery-validation/dist/additional-methods.min.js')}}"></script>
     <script src="{{ asset('assets/dashboard/vendor/jquery-steps/jquery.steps.min.js')}}"></script>
     <script src="{{ asset('assets/dashboard/vendor/minimalist-picker/dobpicker.js')}}"></script>
     <script src="{{ asset('assets/dashboard/js/main.js')}}"></script>
-    <script src="{{ asset('assets/dashboard/js/summernote/dist/summernote.js') }}"></script>
+    
 
+@endpush
+@push("after-styles")
+    <link href="{{ asset('assets/dashboard/js/iconpicker/fontawesome-iconpicker.min.css') }}" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 @endpush

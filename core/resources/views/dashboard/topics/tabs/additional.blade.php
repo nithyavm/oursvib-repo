@@ -12,14 +12,7 @@
                         // print_r($Selected_Fee);
                         // echo '</pre>' ;
                         
-                        ?>
-
-
-
-
-
-
-                        
+                        ?>   
                         @foreach ($Additional as $Additionalfee)                       
                             <?php
                             $addfeehidden="addfeehidden_".$count;
@@ -52,24 +45,35 @@
                                 <div class="col-sm-3">                           
                                         <select name="{{$addfeeselect}}" id='{{$addfeeselect}}' class="form-control dynamic_additional_fees" >
                                             <option value="0">Included</option>   
-                                                 
-                                           @if ($sfee->fee_text==1)
-                                           <option selected="selected" value="1">Paid, Included</option>
-                                           @else
-                                            <option value="1">Paid, Included</option>
-                                           @endif
-                                            
+                                            @if (isset($sfee))     
+                                                @if ($sfee->fee_text==1)
+                                                <option selected="selected" value="1">Paid Service</option>
+                                                @else
+                                                    <option value="1">Paid Service</option>
+                                                @endif
+                                            @else
+                                                <option value="1">Paid Service</option>
+                                            @endif
                                         </select>
                                 </div>
-                                @if ($sfee->fee_text==1)
-                                    <div class="col-sm-3 add-fees" id='{{$addfeeseclectdiv}}'>
+
+                                @if (isset($sfee))
+                                    @if ($sfee->fee_text==1)
+                                        <div class="col-sm-3 add-fees" id='{{$addfeeseclectdiv}}'>
+                                    @else                                
+                                        <div class="col-sm-3 add-fees" style='display:none;' id='{{$addfeeseclectdiv}}'>
+                                    @endif
                                 @else                                
                                     <div class="col-sm-3 add-fees" style='display:none;' id='{{$addfeeseclectdiv}}'>
                                 @endif
                               
                                     <div class="input-group m-bot15">
                                             <span class="input-group-addon">RM</span>
-                                            <input type="number" name="{{$addfeeseclectdivtext}}" value="{{$sfee->fee_value}}"  placeholder="Price for{{ $title }} (per hour)" class="form-control">
+                                            @if (isset($sfee))
+                                                <input type="number" name="{{$addfeeseclectdivtext}}" value="{{$sfee->fee_value}}"  placeholder="Price for{{ $title }} (per hour)" class="form-control">
+                                            @else                                
+                                                <input type="number" name="{{$addfeeseclectdivtext}}"   placeholder="Price for{{ $title }} (per hour)" class="form-control">
+                                            @endif
                                             <span class="input-group-addon ">.00</span>
                                         </div>
                                     </div>
@@ -99,25 +103,15 @@
                 
                         <div class="tit-hightlight">Highlight If you have:</div>
                         <div class="main-check have-options">
+                        @foreach ($highlights as $hlight)        
                                     @if(isset($include_arr)) 
-                                        <input type="checkbox" id="incbrkfast" name="include[]" value="0"   {{ in_array('0', $include_arr) ? 'checked' : '' }} >
-                                        <label for="incbrkfast">Includes Free Gifts</label>
-                        
-                                        <input type="checkbox" id="incwifi" name="include[]" value="1"  {{ in_array('1', $include_arr) ? 'checked' : '' }} >
-                                        <label for="incwifi">Includes Free Wifi</label>
-                        
-                                        <input type="checkbox" id="incpark" name="include[]" value="2"  {{ in_array('2', $include_arr) ? 'checked' : '' }}>
-                                        <label for="incpark">Includes Free Car Parking</label>
-                                    @else
-                                        <input type="checkbox" id="incbrkfast" name="include[]" value="0"  >
-                                        <label for="incbrkfast">Includes Free Gifts</label>
-                        
-                                        <input type="checkbox" id="incwifi" name="include[]" value="1" >
-                                        <label for="incwifi">Includes Free Wifi</label>
-                        
-                                        <input type="checkbox" id="incpark" name="include[]" value="2" >
-                                        <label for="incpark">Includes Free Car Parking</label>
+                                        <input type="checkbox" id="{{$hlight->$title_var}}"  name="include[]" value="{{$hlight->id}}"   {{ in_array($hlight->id, $include_arr) ? 'checked' : '' }} >
+                                        <label for="{{$hlight->$title_var}}">{{$hlight->$title_var}}</label>                        
+                                    @else                                       
+                                        <input type="checkbox" id="{{$hlight->$title_var}}"  name="include[]" value="{{$hlight->id}}" >
+                                        <label for="{{$hlight->$title_var}}">{{$hlight->$title_var}}</label>
                                     @endif
+                        @endforeach
                         </div>
                     </div>
                         

@@ -658,9 +658,8 @@ class TopicsController extends Controller
 
             // SEND Notification Email
             $this->send_notification($WebmasterSection, $Topic, "New");
-
-            return redirect()->action('Dashboard\TopicsController@edit', [$webmasterId, $Topic->id])->with('doneMessage',
-                __('backend.addDone'));
+            return redirect()->action('Dashboard\TopicsController@index', $webmasterId);
+           // return redirect()->action('Dashboard\TopicsController@edit', [$webmasterId, $Topic->id])->with('doneMessage',__('backend.addDone'));
         } else {
             return redirect()->route('NotFound');
         }
@@ -697,7 +696,7 @@ class TopicsController extends Controller
             //$Pppp = Section::where('webmaster_id', '=','13')->get(); 
             if(Auth::user()->id != 1){
             
-           
+            $highlights = Topic::where('webmaster_id', '=','21')->whereIn('created_by', ['1',Auth::user()->id])->get();
             $Additional = Topic::where('webmaster_id', '=','14')->whereIn('created_by', ['1',Auth::user()->id])->get();
             //$Additional= Section::where('webmaster_id', '=','13')->whereIn('created_by', ['1',Auth::user()->id])->get();
             $Activity = Topic::where('webmaster_id', '=','15')->whereIn('created_by', ['1',Auth::user()->id])->get();
@@ -709,6 +708,7 @@ class TopicsController extends Controller
          
                 $Packages = Section::where('webmaster_id', '=','13')->where('father_id','=',0)->get();
                 $Additional = Topic::where('webmaster_id', '=','14')->get();
+                $highlights = Topic::where('webmaster_id', '=','21')->get();
               //  $Additional = Section::where('webmaster_id', '=','13')->get();
             
             $Activity = Topic::where('webmaster_id', '=','15')->get();
@@ -740,7 +740,7 @@ class TopicsController extends Controller
 
                 return view("dashboard.topics.edit",
                     compact("Topics","Listing", "GeneralWebmasterSections", "WebmasterSection", "fatherSections" , "BookingType"
-                    ,"Additional", "Activity","Capacity","Ammenitites","Facility","Packages","Selected_Fee","Selected_Activity","Selected_Include",
+                    ,"Additional","highlights", "Activity","Capacity","Ammenitites","Facility","Packages","Selected_Fee","Selected_Activity","Selected_Include",
                     "Selected_Package","Selected_Ammenity","Selected_Facility","bookandbill"));
             } else {
                 return redirect()->action('Dashboard\TopicsController@index', $webmasterId);
@@ -1043,8 +1043,7 @@ class TopicsController extends Controller
                                 $bookandbill=BookAndBill::where('topic_id' , $id)->delete();
                                 if($request->input('booking_type') != ''){
                                 $booking_type_count = count($request->input('booking_type'));
-                                    for($i=0;$i<$booking_type_count;$i++){
-                                    
+                                    for($i=0;$i<$booking_type_count;$i++){                                    
                                         $addbookandbill = new BookAndBill;
                                         $addbookandbill->topic_id = $id;
                                         $addbookandbill->booking_id =$request->input('booking_type')[$i];
@@ -1052,7 +1051,8 @@ class TopicsController extends Controller
                                         $addbookandbill->u_price =$request->input('u_price')[$i];
                                         $addbookandbill->d_price =$request->input('d_per')[$i];
                                         $addbookandbill->p_price =$request->input('p_price')[$i];
-                                        $addbookandbill->l_price =$request->input('l_price')[$i];                                   
+                                        $addbookandbill->l_price =$request->input('l_price')[$i];   
+                                        $addbookandbill->status =$request->input('bill_status')[$i];                                   
                                         $addbookandbill->save();
                                     }
                                 }

@@ -90,7 +90,7 @@
         },
         onFinished: function (event, currentIndex)
         {
-            alert('Sumited');
+            form.submit();
         },
         // onInit : function (event, currentIndex) {
         //     event.append('demo');

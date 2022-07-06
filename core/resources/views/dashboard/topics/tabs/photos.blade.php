@@ -1,22 +1,13 @@
 @if($WebmasterSection->multi_images_status)
-{!! Form::hidden('section_id',$Topics->webmaster_id) !!}
-{!! Form::hidden('topic_id',$Topics->id) !!}
     <div class="tab-pane  {{ $tab_3 }}" id="tab_photos">
 
         <div class="box-body">
-
-            <div>
-            <div id="dZUpload" class="dropzone">
-                <div class="dz-default dz-message">click to upload here</div>
-            </div>
-              
-                
-                <div class="dz-message" ui-jp="dropzone"
-                     ui-options="{ url: '{{ asset('assets/dashboard/js/dropzone') }}' }">
+            <div style="padding:20px">
+                <div class="dropzone" id="multipleFileUpload" style="padding:10px">
                     <h4 class="m-t-lg m-b-md">{{ __('backend.topicDropFiles') }}</h4>
-                    <span class="text-muted block m-b-lg">( {{ __('backend.topicDropFiles2') }} )</span>
-                </div>
-               
+                    <span class="text-muted block m-b-lg">( {{ __('backend.topicDropFiles2') }})</span>
+                    <a id="submit" role="button" class="btn btn-primary" >Upload</a>
+                </div>      
                 <br>
             </div>
             @if(count($Topics->photos)>0)
@@ -140,7 +131,3 @@
         </div>
     </div>
 @endif
-
-@push("after-scripts")
-  
-@endpush

@@ -104,6 +104,7 @@ class WebmasterSectionsController extends Controller
         $WebmasterSection->attach_file_status = $request->attach_file_status;
         $WebmasterSection->extra_attach_file_status = $request->extra_attach_file_status;
         $WebmasterSection->multi_images_status = $request->multi_images_status;
+        $WebmasterSection->multi_video_status = $request->multi_video_status;
         $WebmasterSection->maps_status = $request->maps_status;
         $WebmasterSection->order_status = $request->order_status;
         $WebmasterSection->section_icon_status = $request->section_icon_status;
@@ -191,6 +192,7 @@ class WebmasterSectionsController extends Controller
             $WebmasterSection->attach_file_status = $request->attach_file_status;
             $WebmasterSection->extra_attach_file_status = $request->extra_attach_file_status;
             $WebmasterSection->multi_images_status = $request->multi_images_status;
+            $WebmasterSection->multi_video_status = $request->multi_video_status;
             $WebmasterSection->maps_status = $request->maps_status;
             $WebmasterSection->order_status = $request->order_status;
             $WebmasterSection->section_icon_status = $request->section_icon_status;

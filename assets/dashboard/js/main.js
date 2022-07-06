@@ -97,16 +97,17 @@
                     return true;
                 }
                 var actionUrl=$("#signup-form").attr('action');              
-                var formData = $(tabpanel).find('select, textarea, input').serialize() // Gets the data from the form fields
+                var formData = $(tabpanel).find('select, textarea, input, input:checkbox, input:radio').serialize() // Gets the data from the form fields
                 $.ajax({
                         type: "POST",
                         url: actionUrl,
                         data: formData,  
                         beforeSend: function(){
-                            /* Show image container */
+                            //alert(actionUrl)
                             $("#overlay").show();
                         },
-                        success: function (data) {                                                 
+                        success: function (data) { 
+                          //  alert("sucess")                                                
                             is_async_step = true;                            
                             $(form).steps("next");
                         },
@@ -131,7 +132,8 @@
         },
         onFinished: function (event, currentIndex)
         {
-            alert('Sumited');
+            alert("submitted")
+           form.submit();
         },
         // onInit : function (event, currentIndex) {
         //     event.append('demo');
